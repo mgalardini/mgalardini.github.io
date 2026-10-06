@@ -1,0 +1,33 @@
+name: "Marco Galardini"
+description: "This is the personal web page of Marco Galardini"
+
+url: "http://mgalardini.github.io"
+baseurl: ""
+
+paginate: 5
+plugins: [jekyll-paginate]
+paginate_path: "posts/page:num"
+
+    # categories: true
+
+permalink: pretty
+markdown: kramdown
+kramdown: 
+  parse_block_html: true
+
+# Photography posts live in their own collection (_photography/), so they are
+# kept out of site.posts: the paginated /posts stream, the landing page "Recent
+# Posts" and posts.xml. They are listed at /categories/photography/ and in
+# photography.xml instead.
+collections:
+  photography:
+    output: true
+    permalink: /photography/:year/:month/:day/:title/
+
+defaults:
+  - scope:
+      path: ""
+      type: photography
+    values:
+      layout: post
+      group: photography

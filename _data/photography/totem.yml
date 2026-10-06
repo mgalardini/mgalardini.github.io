@@ -1,0 +1,7 @@
+# Titles and alt text for the photos in /static/img/totem (the Totem gallery).
+# Keys are filenames without the extension; both fields are optional.
+# Photos not listed here have no label.
+#
+# totem001:
+#   title: Shown below the photo and in the lightbox
+#   alt: Description of the photo for screen readers

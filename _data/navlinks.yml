@@ -1,0 +1,20 @@
+- name: home
+  link: "/"
+  group: home
+
+- name: posts
+  link: "/posts"
+  group: posts
+
+- name: reading
+  link: "/reading"
+  group: reading
+
+- name: photography
+  link: "#"
+  group: photography
+  subpages:
+      - title: Smartphone photography
+        url: "/categories/photography/"
+      - title: Totem
+        url: "/photography/totem/"

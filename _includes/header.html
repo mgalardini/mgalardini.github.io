@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ page.title }}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="{{ site.description }}">
+    <meta name="theme-color" content="#fff9d0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    {% if page.group == 'posts' %}
+    <link rel="alternate" type="application/atom+xml" title="Posts Feed" href="/posts.xml">
+    {% endif %}
+
+    {% if page.group == 'photography' %}
+    <link rel="alternate" type="application/atom+xml" title="Photography Feed" href="/photography.xml">
+    {% endif %}
+
+    <!-- <link rel="shortcut icon" href="/favicon.ico"> -->
+
+    <!-- <link href="/static/css/bootstrap.css" rel="stylesheet"> -->
+    <!-- <link href="/static/css/bootstrap-responsive.css" rel="stylesheet"> -->
+    <link href="/static/css/syntax.css" rel="stylesheet">
+    <link href="/static/css/custom.css" rel="stylesheet">
+
+    <!-- <script type="text/javascript" src="https://www.google.com/jsapi"></script> -->
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script> -->
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+      <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <!-- Static navbar -->
+    <nav class="navbar navbar-expand-md navbar-dark" style="background-color: #03719c">
+        <div class="container">
+            <a class="navbar-brand" href="/">{{site.name}}</a>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <!-- <div class="navbar-collapse collapse" id="navbarContent"> -->
+            <div class="collapse collapse-inverse navbar-collapse site-navbar-collapse" id="navbarContent">
+              <ul class="navbar-nav ml-auto">
+                {% for link in site.data.navlinks %}
+                  {% if page.group == link.group %}
+                    <li class = "nav-item active {% if link.subpages %}dropdown{% endif %}">
+                        <a class="nav-link{% if link.subpages %} dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% else %}"{% endif %} href="{{link.link}}" alt="{{link.name}}"> {{link.name}}<span class="sr-only">(current)</span></a>
+                  {% else %}
+                    <li class="nav-item {% if link.subpages %}dropdown{% endif %}">
+                        <a class="nav-link{% if link.subpages %} dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"{% else %}"{% endif %} href="{{link.link}}" alt="{{link.name}}"> {{link.name}}</a>
+                  {% endif %}
+                  {% if link.subpages %}
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% for page in link.subpages %}
+                        <a class="dropdown-item" href="{{ page.url }}">{{ page.title }}</a>
+                        {% endfor %}
+                        </div>
+                    {% endif %}
+                    </li>
+                {% endfor %}
+              </ul>
+            </div><!--/.nav-collapse -->
+         </div>
+      </nav>
+
+    <div class="container">

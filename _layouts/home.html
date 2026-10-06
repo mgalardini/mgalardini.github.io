@@ -1,0 +1,59 @@
+{% include header.html %}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8">
+    	    <div class="jumbotron">
+        	    {{ content }}
+            <div class="row">
+                <div class="col-lg-6">
+                    <h3> Recent Posts </h3>
+                    {% for post in site.posts limit: 5 %}
+                    <h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
+                    <p>{{ post.content | markdownify | strip_html | truncatewords: 50 }}</p>
+                    {% else %}
+                    <p class="text-muted">No posts (yet)</p>
+                    {% endfor %}
+                    {% if site.posts.size > 0 %}
+                    <p><a href="/posts">All posts &raquo;</a></p>
+                    {% endif %}
+                </div>
+                <div class="col-lg-6">
+                    <h3> Photography Posts </h3>
+                    {% assign photo_posts = site.photography | reverse %}
+                    {% for post in photo_posts limit: 5 %}
+                    <h4><a href="{{ post.url }}">{{ post.title }}</a></h4>
+                    {% if post.image %}
+                    <a href="{{ post.url }}"><img class="img-fluid rounded mb-2" src="{{ post.image }}" alt="{{ post.title }}"></a>
+                    {% endif %}
+                    <p>{{ post.excerpt | markdownify | strip_html | truncatewords: 30 }}</p>
+                    {% else %}
+                    <p class="text-muted">No posts (yet)</p>
+                    {% endfor %}
+                    {% if photo_posts.size > 0 %}
+                    <p><a href="/categories/photography/">All photography posts &raquo;</a></p>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+    	    <div class="landing-swap">
+    	        <img class="img-fluid mx-auto" src="/static/img/landing.jpg" alt="An AI-powered portrait of Marco">
+    	        <img class="img-fluid mx-auto landing-alt" src="/static/img/landing_alt.jpg" alt="" aria-hidden="true">
+    	    </div>
+    	    <small>Marco Galardini</small> <small class="text-muted">having a good time at Twincore</small>
+    	    <p class="mt-2"><small>Get in touch: <a id="contact-email" href="#"></a><noscript>mgalardini.stream055 [at] passinbox [dot] com</noscript></small></p>
+    	    <script>
+    	        // The address is put together in the browser so it never appears whole in the page source
+    	        (function () {
+    	            var address = ['mgalardini.stream055', 'passinbox.com'].join('@');
+    	            var link = document.getElementById('contact-email');
+    	            link.href = 'mailto:' + address;
+    	            link.textContent = address;
+    	        })();
+    	    </script>
+        </div>
+    </div>
+</div>
+{% include footer.html %}

@@ -1,0 +1,67 @@
+<style>
+    .image-gallery {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .image-gallery .gallery-item {
+        margin-bottom: 20px;
+    }
+    .image-gallery .gallery-item a {
+        text-align: center; 
+        text-decoration: none!important; 
+        color: #777;
+        display: block;
+    }
+    .image-gallery .gallery-item a span {
+        display: block; 
+        text-overflow: ellipsis; 
+        overflow: hidden; 
+        white-space: nowrap; 
+        padding: 8px 0;
+        font-size: 0.9em;
+    }
+    .image-gallery .gallery-item a img {
+        width: 100%; 
+        height: 200px;
+        object-fit: cover;
+        display: block;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        transition: transform 0.2s ease;
+    }
+    .image-gallery .gallery-item a img:hover {
+        transform: scale(1.05);
+    }
+</style>
+
+{% comment %}
+Usage: {% include image-gallery.html folder="/static/img/totem" %}
+
+Shows every .jpg/.jpeg in `folder`. Photos have no label by default; titles and
+alt text are read from _data/photography/<name>.yml, where <name> is the last
+part of `folder` (here "totem"), or the `data` parameter if given:
+
+  totem001:
+    title: Shown below the photo and in the lightbox
+    alt: Description of the photo for screen readers
+
+Keys are filenames without the extension; both fields are optional. Without
+`alt`, the title is used, falling back to the page title.
+{% endcomment %}
+{%- assign gallery_folder = include.folder | append: "/" | replace: "//", "/" -%}
+{%- assign gallery_key = include.folder | split: "/" | last -%}
+{%- if include.data -%}{%- assign gallery_key = include.data -%}{%- endif -%}
+{%- assign gallery_data = site.data.photography[gallery_key] -%}
+<div class="row image-gallery" markdown="0">
+{%- for file in site.static_files -%}
+{%- if file.path contains gallery_folder -%}
+{%- if file.extname == '.jpg' or file.extname == '.jpeg' or file.extname == '.JPG' or file.extname == '.JPEG' -%}
+{%- assign filename = file.path | split: "/" | last | replace: file.extname, "" -%}
+{%- assign photo = gallery_data[filename] -%}
+{%- assign photo_alt = photo.alt | default: photo.title | default: page.title -%}
+<div class="col-6 col-sm-4 col-md-3 col-lg-2 gallery-item"><a href="{{ file.path | relative_url }}" title="{{ photo.title | escape }}" data-alt="{{ photo_alt | escape }}"><img src="{{ file.path | relative_url }}" alt="{{ photo_alt | escape }}" />{% if photo.title %}<span>{{ photo.title | escape }}</span>{% endif %}</a></div>
+{%- endif -%}
+{%- endif -%}
+{%- endfor -%}
+</div>

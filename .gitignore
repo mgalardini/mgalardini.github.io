@@ -1,0 +1,9 @@
+# Jekyll build output and caches (also matches the stray _layouts/_site/)
+_site/
+.jekyll-cache/
+.jekyll-metadata
+.sass-cache/
+
+# Local bundler install
+vendor/
+.bundle/
