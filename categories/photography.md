@@ -15,9 +15,8 @@ permalink: /categories/photography/
     <span class="author">{{post.author}}</span><br>
     <span class="date"><em>{{ post.date | date_to_long_string }}</em></span>
   </p>
-  <div class="content">
-    {{ post.excerpt }}
-  </div>
+  {% if post.image %}<a href="{{ post.url }}"><img class="img-fluid rounded mb-2" src="{{ post.image }}" alt="{{ post.title }}" loading="lazy" style="max-width: 400px"></a>{% endif %}
+  <div class="content">{{ post.excerpt | markdownify }}</div>
 {% else %}
   <p class="text-muted">No posts (yet)</p>
 {% endfor %}

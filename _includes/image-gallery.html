@@ -22,8 +22,8 @@
         font-size: 0.9em;
     }
     .image-gallery .gallery-item a img {
-        width: 100%; 
-        height: 200px;
+        width: 100%;
+        aspect-ratio: 1 / 1;
         object-fit: cover;
         display: block;
         border-radius: 4px;
@@ -38,9 +38,12 @@
 {% comment %}
 Usage: {% include image-gallery.html folder="/static/img/totem" %}
 
-Shows every .jpg/.jpeg in `folder`. Photos have no label by default; titles and
-alt text are read from _data/photography/<name>.yml, where <name> is the last
-part of `folder` (here "totem"), or the `data` parameter if given:
+Shows every .jpg/.jpeg directly inside `folder`, in filename order. The grid
+uses the matching thumbnail from `folder`/thumbs/ (made by
+_scripts/prepare-photos.sh) when there is one, and clicking opens the full
+photo. Photos have no label by default; titles and alt text are read from
+_data/photography/<name>.yml, where <name> is the last part of `folder` (here
+"totem"), or the `data` parameter if given:
 
   totem001:
     title: Shown below the photo and in the lightbox
@@ -50,18 +53,27 @@ Keys are filenames without the extension; both fields are optional. Without
 `alt`, the title is used, falling back to the page title.
 {% endcomment %}
 {%- assign gallery_folder = include.folder | append: "/" | replace: "//", "/" -%}
+{%- assign thumbs_folder = gallery_folder | append: "thumbs/" -%}
 {%- assign gallery_key = include.folder | split: "/" | last -%}
 {%- if include.data -%}{%- assign gallery_key = include.data -%}{%- endif -%}
 {%- assign gallery_data = site.data.photography[gallery_key] -%}
+{%- assign gallery_files = site.static_files | sort: "path" -%}
+{%- capture thumb_paths -%}|{%- for file in gallery_files -%}{%- if file.path contains thumbs_folder -%}{{ file.path }}|{%- endif -%}{%- endfor -%}{%- endcapture -%}
 <div class="row image-gallery" markdown="0">
-{%- for file in site.static_files -%}
+{%- for file in gallery_files -%}
 {%- if file.path contains gallery_folder -%}
+{%- assign relative = file.path | remove_first: gallery_folder -%}
+{%- unless relative contains "/" -%}
 {%- if file.extname == '.jpg' or file.extname == '.jpeg' or file.extname == '.JPG' or file.extname == '.JPEG' -%}
-{%- assign filename = file.path | split: "/" | last | replace: file.extname, "" -%}
+{%- assign filename = relative | replace: file.extname, "" -%}
+{%- assign thumb = thumbs_folder | append: relative -%}
+{%- assign thumb_key = "|" | append: thumb | append: "|" -%}
+{%- unless thumb_paths contains thumb_key -%}{%- assign thumb = file.path -%}{%- endunless -%}
 {%- assign photo = gallery_data[filename] -%}
 {%- assign photo_alt = photo.alt | default: photo.title | default: page.title -%}
-<div class="col-6 col-sm-4 col-md-3 col-lg-2 gallery-item"><a href="{{ file.path | relative_url }}" title="{{ photo.title | escape }}" data-alt="{{ photo_alt | escape }}"><img src="{{ file.path | relative_url }}" alt="{{ photo_alt | escape }}" />{% if photo.title %}<span>{{ photo.title | escape }}</span>{% endif %}</a></div>
+<div class="col-6 col-sm-4 col-md-3 col-lg-2 gallery-item"><a href="{{ file.path | relative_url }}" title="{{ photo.title | escape }}" data-alt="{{ photo_alt | escape }}"><img src="{{ thumb | relative_url }}" alt="{{ photo_alt | escape }}" loading="lazy" />{% if photo.title %}<span>{{ photo.title | escape }}</span>{% endif %}</a></div>
 {%- endif -%}
+{%- endunless -%}
 {%- endif -%}
 {%- endfor -%}
 </div>

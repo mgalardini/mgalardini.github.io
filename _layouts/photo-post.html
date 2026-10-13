@@ -1,0 +1,15 @@
+{% include header.html %}
+
+<!-- Like post.html, but full width so photo galleries get the whole page -->
+<div class="row">
+    <div class="col-12">
+        <div class = "page header"><h1>{{ page.title }}</h1></div>
+        <p><span class="author">{{page.author}}</span><br>
+        <span class="date"><em>{{ page.date | date_to_long_string }}</em></span></p>
+        <p><small><a href="/categories/photography/">&laquo; All photography posts</a></small></p>
+        {{ content }}
+        {% include post-nav.html %}
+    </div>
+</div>
+
+{% include footer.html %}

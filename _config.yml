@@ -29,5 +29,5 @@ defaults:
       path: ""
       type: photography
     values:
-      layout: post
+      layout: photo-post
       group: photography

@@ -72,3 +72,10 @@ body {
 .landing-swap:hover .landing-alt {
   opacity: 1;
 }
+
+/* Small square preview next to each photography post on the landing page */
+.photo-preview {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
